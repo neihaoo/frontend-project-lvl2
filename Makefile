@@ -1,11 +1,21 @@
 install:
-	npm install
+	npm ci
 
 run:
 	npx babel-node src/bin/gendiff.js -h
 
-publish:
-	npm publish --dry-run
+build:
+	rm -rf dist
+	npm run build
+
+test: 
+	npm test
+
+test-coverage:
+	npm test -- --coverage
 
 lint:
 	npx eslint .
+
+publish:
+	npm publish --dry-run

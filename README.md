@@ -1,5 +1,9 @@
 # Gendiff (Hexlet Frontend Project Level 2)
 
+![Node.js CI](https://github.com/neihaoo/frontend-project-lvl2/workflows/Node.js%20CI/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9332ebbc26c130ef75b4/maintainability)](https://codeclimate.com/github/neihaoo/frontend-project-lvl2/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9332ebbc26c130ef75b4/test_coverage)](https://codeclimate.com/github/neihaoo/frontend-project-lvl2/test_coverage)
+
 ## Table of Contents
 
 - [Install](#Install)

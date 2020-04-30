@@ -1,11 +1,18 @@
 import { has, union } from 'lodash';
+import { readFileSync } from 'fs';
 
-const genJSONDiff = (firstJson, secondJson) => {
-  const firstObj = JSON.parse(firstJson);
-  const secondObj = JSON.parse(secondJson);
+const genJSONDiff = (firstPath, secondPath) => {
+  const firstFile = readFileSync(firstPath, 'utf8');
+  const secondFile = readFileSync(secondPath, 'utf8');
+
+  const firstObj = JSON.parse(firstFile);
+  const secondObj = JSON.parse(secondFile);
+
   const firstObjKeys = Object.keys(firstObj);
   const secondObjKeys = Object.keys(secondObj);
+
   const uniqKeys = union(firstObjKeys, secondObjKeys);
+
   const result = uniqKeys
     .reduce((acc, key) => {
       const addedItem = `+ ${key}: ${secondObj[key]}`;
@@ -18,9 +25,7 @@ const genJSONDiff = (firstJson, secondJson) => {
           : [...acc, addedItem, deletedItem];
       }
 
-      return !has(firstObj, key)
-        ? [...acc, addedItem]
-        : [...acc, deletedItem];
+      return !has(firstObj, key) ? [...acc, addedItem] : [...acc, deletedItem];
     }, [])
     .join('\n  ');
 

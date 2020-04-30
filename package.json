@@ -25,6 +25,7 @@
     "url": "git+https://github.com/neihaoo/frontend-project-lvl2.git"
   },
   "scripts": {
+    "test": "jest",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
     "prepublishOnly": "npm run build"
   },
@@ -38,9 +39,12 @@
     "@babel/node": "^7.8.7",
     "@babel/preset-env": "^7.9.5",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.4.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-babel": "^5.3.0",
-    "eslint-plugin-import": "^2.20.2"
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.8.2",
+    "jest": "^25.4.0"
   }
 }
