@@ -1,6 +1,6 @@
 name: Node.js CI
 
-on: 
+on:
   - push
   - pull_request
 
@@ -20,13 +20,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install project
-      - run: make install
+        run: make install
         env:
           CI: true
       - name: Run linter
-      - run: make lint
+        run: make lint
       - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v2.6.0
+        uses: paambaati/codeclimate-action@v2.4.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
