@@ -10,6 +10,7 @@
 - [Usage](#Usage)
   - [JSON](#JSON)
   - [YAML](#YAML)
+  - [INI](#INI)
 
 ## Install
 
@@ -36,3 +37,11 @@ $ gendiff before.yml after.yml
 ```
 
 [![asciicast](https://asciinema.org/a/tzoWPQ5hGHWL6HcX3Iv5DeIbe.svg)](https://asciinema.org/a/tzoWPQ5hGHWL6HcX3Iv5DeIbe)
+
+### INI
+
+```sh
+$ gendiff before.ini after.ini
+```
+
+[![asciicast](https://asciinema.org/a/YwLrgUYmMFNZdJBEGONOkPQM8.svg)](https://asciinema.org/a/YwLrgUYmMFNZdJBEGONOkPQM8)

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import cliGenDiff from '../cli';
+import cliGenDiff from '../cliGenDiff';
 
 cliGenDiff();
