@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import genDiff from '../cli';
+import cliGenDiff from '../cli';
 
-genDiff();
+cliGenDiff();

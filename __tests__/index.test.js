@@ -1,26 +1,28 @@
-import path from 'path';
-import genJSONDiff from '../src/index';
+import { join } from 'path';
+import genDiff from '../src/index';
 
-let firstFilePath;
-let secondFilePath;
-let expectedDiff;
+const getFixturePath = (filename) => (
+  join(__dirname, '..', '__fixtures__', filename)
+);
+
+let expected;
 
 beforeAll(() => {
-  firstFilePath = path.join(__dirname, '/fixtures/before.json');
-  secondFilePath = path.join(__dirname, '/fixtures/after.json');
-  expectedDiff = '{\n    host: hexlet.io\n  + timeout: 20\n  - timeout: 50\n  - proxy: 123.234.53.22\n  - follow: false\n  + verbose: true\n}';
+  expected = '{\n    host: hexlet.io\n  + timeout: 20\n  - timeout: 50\n  - proxy: 123.234.53.22\n  - follow: false\n  + verbose: true\n}';
 });
 
-describe('Generating JSON diff', () => {
-  test('Should pass', () => {
-    const diff = genJSONDiff(firstFilePath, secondFilePath);
+test('Test JSON diff', () => {
+  const firstFixturePath = getFixturePath('before.json');
+  const secondFixturePath = getFixturePath('after.json');
+  const diff = genDiff(firstFixturePath, secondFixturePath);
 
-    expect(diff).toBe(expectedDiff);
-  });
+  expect(diff).toEqual(expected);
+});
 
-  test("Shouldn't pass", () => {
-    const diff = genJSONDiff(secondFilePath, firstFilePath);
+test('Test YAML diff', () => {
+  const firstFixturePath = getFixturePath('before.yml');
+  const secondFixturePath = getFixturePath('after.yml');
+  const diff = genDiff(firstFixturePath, secondFixturePath);
 
-    expect(diff).not.toBe(expectedDiff);
-  });
+  expect(diff).toEqual(expected);
 });

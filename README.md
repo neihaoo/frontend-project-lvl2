@@ -8,6 +8,8 @@
 
 - [Install](#Install)
 - [Usage](#Usage)
+  - [JSON](#JSON)
+  - [YAML](#YAML)
 
 ## Install
 
@@ -17,10 +19,20 @@ $ npm link
 
 [![asciicast](https://asciinema.org/a/uO6RQkG88Njg1wo8m0ichk0op.svg)](https://asciinema.org/a/uO6RQkG88Njg1wo8m0ichk0op)
 
-## Run
+## Usage
+
+### JSON
 
 ```sh
 $ gendiff before.json after.json
 ```
 
 [![asciicast](https://asciinema.org/a/EkTeB8FWLJb0zEmHAQKDJVNz2.svg)](https://asciinema.org/a/EkTeB8FWLJb0zEmHAQKDJVNz2)
+
+### YAML
+
+```sh
+$ gendiff before.yml after.yml
+```
+
+[![asciicast](https://asciinema.org/a/tzoWPQ5hGHWL6HcX3Iv5DeIbe.svg)](https://asciinema.org/a/tzoWPQ5hGHWL6HcX3Iv5DeIbe)

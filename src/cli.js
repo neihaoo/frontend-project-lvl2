@@ -1,14 +1,14 @@
 import { program } from 'commander';
-import genJSONDiff from './index';
+import genDiff from './index';
 
-const genDiff = () => {
+const cliGenDiff = () => {
   program
-    .version('1.0.0')
+    .version('1.1.0')
     .description('Compares two configuration files and shows a difference.')
     .option('-f, --format [type]', 'output format')
     .arguments('<firstConfig> <secondConfig>')
     .action((firstConfig, secondConfig) => {
-      console.log(genJSONDiff(firstConfig, secondConfig));
+      console.log(genDiff(firstConfig, secondConfig));
     })
     .parse(process.argv);
 
@@ -17,4 +17,4 @@ const genDiff = () => {
   }
 };
 
-export default genDiff;
+export default cliGenDiff;

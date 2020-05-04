@@ -1,13 +1,9 @@
 import { has, union } from 'lodash';
 import { readFileSync } from 'fs';
+import { extname } from 'path';
+import getParser from './parsers';
 
-const genJSONDiff = (firstPath, secondPath) => {
-  const firstFile = readFileSync(firstPath, 'utf8');
-  const secondFile = readFileSync(secondPath, 'utf8');
-
-  const firstObj = JSON.parse(firstFile);
-  const secondObj = JSON.parse(secondFile);
-
+const compareObjects = (firstObj, secondObj) => {
   const firstObjKeys = Object.keys(firstObj);
   const secondObjKeys = Object.keys(secondObj);
 
@@ -32,4 +28,19 @@ const genJSONDiff = (firstPath, secondPath) => {
   return `{\n  ${result}\n}`;
 };
 
-export default genJSONDiff;
+const genDiff = (firstPath, secondPath) => {
+  const format = extname(firstPath);
+  const parse = getParser(format);
+
+  const firstFile = readFileSync(firstPath, 'utf8');
+  const secondFile = readFileSync(secondPath, 'utf8');
+
+  const firstObject = parse(firstFile, format);
+  const secondObject = parse(secondFile, format);
+
+  const diff = compareObjects(firstObject, secondObject);
+
+  return diff;
+};
+
+export default genDiff;
