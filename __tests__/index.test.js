@@ -1,8 +1,9 @@
+import { test, expect } from '@jest/globals';
 import { join } from 'path';
-import genDiff from '../src/index';
+import genDiff from '../index.js';
 
 const getFixturePath = (filename) => (
-  join(__dirname, '..', '__fixtures__', filename)
+  join(process.cwd(), '__fixtures__', filename)
 );
 
 let expected;

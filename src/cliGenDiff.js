@@ -1,5 +1,5 @@
-import { program } from 'commander';
-import genDiff from './index';
+import program from 'commander';
+import genDiff from '../index.js';
 
 const cliGenDiff = () => {
   program

@@ -1,13 +1,13 @@
-import { has, union } from 'lodash';
+import _ from 'lodash';
 import { readFileSync } from 'fs';
 import { extname } from 'path';
-import getParser from './parsers';
+import getParser from './src/parsers.js';
 
 const compareObjects = (firstObj, secondObj) => {
   const firstObjKeys = Object.keys(firstObj);
   const secondObjKeys = Object.keys(secondObj);
 
-  const uniqKeys = union(firstObjKeys, secondObjKeys);
+  const uniqKeys = _.union(firstObjKeys, secondObjKeys);
 
   const result = uniqKeys
     .reduce((acc, key) => {
@@ -15,13 +15,13 @@ const compareObjects = (firstObj, secondObj) => {
       const deletedItem = `- ${key}: ${firstObj[key]}`;
       const noChangedItem = `  ${key}: ${secondObj[key]}`;
 
-      if (has(firstObj, key) && has(secondObj, key)) {
+      if (_.has(firstObj, key) && _.has(secondObj, key)) {
         return (firstObj[key] === secondObj[key])
           ? [...acc, noChangedItem]
           : [...acc, addedItem, deletedItem];
       }
 
-      return !has(firstObj, key) ? [...acc, addedItem] : [...acc, deletedItem];
+      return !_.has(firstObj, key) ? [...acc, addedItem] : [...acc, deletedItem];
     }, [])
     .join('\n  ');
 
