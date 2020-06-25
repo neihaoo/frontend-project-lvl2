@@ -1,46 +1,59 @@
-import _ from 'lodash';
 import { readFileSync } from 'fs';
 import { extname } from 'path';
-import getParser from './src/parsers.js';
+import parse from './src/parsers.js';
+import buildAst from './src/buildAst.js';
 
-const compareObjects = (firstObj, secondObj) => {
-  const firstObjKeys = Object.keys(firstObj);
-  const secondObjKeys = Object.keys(secondObj);
+const indent = (depth = 0) => '  '.repeat(depth);
 
-  const uniqKeys = _.union(firstObjKeys, secondObjKeys);
+const objToString = (obj) => (
+  Object.entries(obj).map(([key, value]) => `${key}: ${value}`).join('')
+);
 
-  const result = uniqKeys
-    .reduce((acc, key) => {
-      const addedItem = `+ ${key}: ${secondObj[key]}`;
-      const deletedItem = `- ${key}: ${firstObj[key]}`;
-      const noChangedItem = `  ${key}: ${secondObj[key]}`;
+const stringify = (value, depth) => (
+  value instanceof Object
+    ? `{\n${indent(depth + 3)}${objToString(value)}\n${indent(depth + 1)}}`
+    : value
+);
 
-      if (_.has(firstObj, key) && _.has(secondObj, key)) {
-        return (firstObj[key] === secondObj[key])
-          ? [...acc, noChangedItem]
-          : [...acc, addedItem, deletedItem];
-      }
+const nodeToString = (key, value, symbol = '', depth) => (
+  `${indent(depth)}${symbol} ${key}: ${stringify(value, depth)}`
+);
 
-      return !_.has(firstObj, key) ? [...acc, addedItem] : [...acc, deletedItem];
-    }, [])
-    .join('\n  ');
-
-  return `{\n  ${result}\n}`;
+const typesActions = {
+  nested: ({ name, value }, depth, fn) => (
+    `  ${indent(depth)}${name}: ${fn(value, depth + 2)}`
+  ),
+  unchanged: ({ name, value }, depth) => nodeToString(name, value, ' ', depth),
+  changed: ({ name, value }, depth) => [
+    nodeToString(name, value.before, '-', depth),
+    nodeToString(name, value.after, '+', depth),
+  ],
+  deleted: ({ name, value }, depth) => nodeToString(name, value, '-', depth),
+  added: ({ name, value }, depth) => nodeToString(name, value, '+', depth),
 };
 
-const genDiff = (firstPath, secondPath) => {
-  const format = extname(firstPath);
-  const parse = getParser(format);
+const stylishRender = (ast, depth = 1) => {
+  const result = ast
+    .flatMap((node) => typesActions[node.type](node, depth, stylishRender))
+    .join('\n');
 
-  const firstFile = readFileSync(firstPath, 'utf8');
-  const secondFile = readFileSync(secondPath, 'utf8');
-
-  const firstObject = parse(firstFile, format);
-  const secondObject = parse(secondFile, format);
-
-  const diff = compareObjects(firstObject, secondObject);
-
-  return diff;
+  return `{\n${result}\n${indent(depth - 1)}}`;
 };
 
-export default genDiff;
+const formaters = {
+  stylish: stylishRender,
+};
+
+const render = (ast, format = 'stylish') => formaters[format](ast);
+
+const prepareConfig = (path) => (
+  parse(readFileSync(path, 'utf8'), extname(path))
+);
+
+export default (firstPath, secondPath, format) => {
+  const firstConfig = prepareConfig(firstPath);
+  const secondConfig = prepareConfig(secondPath);
+  const ast = buildAst(firstConfig, secondConfig);
+
+  return render(ast, format);
+};
