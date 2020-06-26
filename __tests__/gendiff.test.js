@@ -6,30 +6,24 @@ import genDiff from '../index.js';
 const getFixturePath = (filename) => (
   join(process.cwd(), '__fixtures__', filename)
 );
+
 const readFile = (filename) => (
   readFileSync(getFixturePath(filename), 'utf-8')
 );
 
-let expected;
-let expectedNested;
+const table = [
+  ['json', 'stylish'],
+  ['json', 'plain'],
+  ['yml', 'stylish'],
+  ['yml', 'plain'],
+  ['ini', 'stylish'],
+  ['ini', 'plain'],
+];
 
-beforeAll(() => {
-  expected = readFile('result.txt').trim();
-  expectedNested = readFile('result_nested.txt').trim();
-});
+test.each(table)('genDiff (files: %s, output: %s)', (ext, format) => {
+  const firstFixturePath = getFixturePath(`before.${ext}`);
+  const secondFixturePath = getFixturePath(`after.${ext}`);
+  const expected = readFile(`result_${format}.txt`).trim();
 
-test.each([
-  [getFixturePath('before.json'), getFixturePath('after.json')],
-  [getFixturePath('before.yml'), getFixturePath('after.yml')],
-  [getFixturePath('before.ini'), getFixturePath('after.ini')],
-])('genDiff', (firstFixturePath, secondFixturePath) => {
-  expect(genDiff(firstFixturePath, secondFixturePath)).toBe(expected);
-});
-
-test.each([
-  [getFixturePath('before_nested.json'), getFixturePath('after_nested.json')],
-  [getFixturePath('before_nested.yml'), getFixturePath('after_nested.yml')],
-  [getFixturePath('before_nested.ini'), getFixturePath('after_nested.ini')],
-])('genDiff (Nested)', (firstFixturePath, secondFixturePath) => {
-  expect(genDiff(firstFixturePath, secondFixturePath)).toBe(expectedNested);
+  expect(genDiff(firstFixturePath, secondFixturePath, format)).toBe(expected);
 });

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const keyTypes = [
+const propertyTypes = [
   {
     type: 'nested',
     check: (first, second, key) => (
@@ -41,7 +41,7 @@ const buildAst = (firstConfig, secondConfig) => {
   const configsKeys = _.union(Object.keys(firstConfig), Object.keys(secondConfig));
 
   return configsKeys.map((key) => {
-    const { type, process } = keyTypes.find(({ check }) => (
+    const { type, process } = propertyTypes.find(({ check }) => (
       check(firstConfig, secondConfig, key)
     ));
     const value = process(firstConfig[key], secondConfig[key], buildAst);

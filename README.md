@@ -1,6 +1,6 @@
 # Gendiff (Hexlet Frontend Project Level 2)
 
-[![Node.js CI](https://github.com/neihaoo/frontend-project-lvl2/workflows/Node.js%20CI/badge.svg)](https://github.com/neihaoo/frontend-project-lvl2/actions))
+[![Node.js CI](https://github.com/neihaoo/frontend-project-lvl2/workflows/Node.js%20CI/badge.svg)](https://github.com/neihaoo/frontend-project-lvl2/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9332ebbc26c130ef75b4/maintainability)](https://codeclimate.com/github/neihaoo/frontend-project-lvl2/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/9332ebbc26c130ef75b4/test_coverage)](https://codeclimate.com/github/neihaoo/frontend-project-lvl2/test_coverage)
 
@@ -36,6 +36,12 @@ $ gendiff before_nested.json after_nested.json
 
 [![asciicast](https://asciinema.org/a/AJIOgOfvsmVFde2lFjirPAcMw.svg)](https://asciinema.org/a/AJIOgOfvsmVFde2lFjirPAcMw)
 
+```sh
+$ gendiff --format plain before.json after.json
+```
+
+[![asciicast](https://asciinema.org/a/Ypd0YlOzB7NUV6RuJqL8IAYU7.svg)](https://asciinema.org/a/Ypd0YlOzB7NUV6RuJqL8IAYU7)
+
 ### YAML
 
 ```sh
@@ -50,6 +56,12 @@ $ gendiff before_nested.yml after_nested.yml
 
 [![asciicast](https://asciinema.org/a/xp5GHsEcQRiOzOK5difiFo5iU.svg)](https://asciinema.org/a/xp5GHsEcQRiOzOK5difiFo5iU)
 
+```sh
+$ gendiff --format plain before.yml after.yml
+```
+
+[![asciicast](https://asciinema.org/a/LkKmw3U6M4zvajqAbgxRoOr35.svg)](https://asciinema.org/a/LkKmw3U6M4zvajqAbgxRoOr35)
+
 ### INI
 
 ```sh
@@ -63,3 +75,9 @@ $ gendiff before_nested.ini after_nested.ini
 ```
 
 [![asciicast](https://asciinema.org/a/QRXYcJObPWXVGbgySuJPl4c9J.svg)](https://asciinema.org/a/QRXYcJObPWXVGbgySuJPl4c9J)
+
+```sh
+$ gendiff --format plain before.ini after.ini
+```
+
+[![asciicast](https://asciinema.org/a/AWgPl67IhHipRHQsGtv00Qeyn.svg)](https://asciinema.org/a/AWgPl67IhHipRHQsGtv00Qeyn)
