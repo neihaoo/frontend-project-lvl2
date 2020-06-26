@@ -11,18 +11,14 @@ const propertyTypes = [
   },
   {
     type: 'unchanged',
-    check: (first, second, key) => (
-      (_.has(first, key) && _.has(second, key))
-      && (first[key] === second[key])
-    ),
+    check: (first, second, key) => (_.has(first, key) && _.has(second, key))
+      && (first[key] === second[key]),
     process: _.identity,
   },
   {
     type: 'changed',
-    check: (first, second, key) => (
-      (_.has(first, key) && _.has(second, key))
-      && (first[key] !== second[key])
-    ),
+    check: (first, second, key) => (_.has(first, key) && _.has(second, key))
+      && (first[key] !== second[key]),
     process: (first, second) => ({ before: first, after: second }),
   },
   {
@@ -41,9 +37,8 @@ const buildAst = (firstConfig, secondConfig) => {
   const configsKeys = _.union(Object.keys(firstConfig), Object.keys(secondConfig));
 
   return configsKeys.map((key) => {
-    const { type, process } = propertyTypes.find(({ check }) => (
-      check(firstConfig, secondConfig, key)
-    ));
+    const { type, process } = propertyTypes
+      .find(({ check }) => check(firstConfig, secondConfig, key));
     const value = process(firstConfig[key], secondConfig[key], buildAst);
 
     return { type, name: key, value };

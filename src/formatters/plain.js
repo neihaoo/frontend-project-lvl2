@@ -1,25 +1,7 @@
-const valueTypes = [
-  {
-    check: (value) => value instanceof Object,
-    process: () => '[complex value]',
-  },
-  {
-    check: (value) => typeof value === 'boolean',
-    process: (value) => value,
-  },
-  {
-    check: (value) => !Number.isNaN(Number(value)),
-    process: parseInt,
-  },
-  {
-    check: (value) => typeof value === 'string',
-    process: (value) => `'${value}'`,
-  },
-];
-
 const stringify = (value) => {
-  const { process } = valueTypes.find(({ check }) => check(value));
-  return process(value);
+  const processedValue = typeof value === 'string' ? `'${value}'` : value;
+
+  return value instanceof Object ? '[complex value]' : processedValue;
 };
 
 const typeActions = {

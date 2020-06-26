@@ -42,6 +42,12 @@ $ gendiff --format plain before.json after.json
 
 [![asciicast](https://asciinema.org/a/Ypd0YlOzB7NUV6RuJqL8IAYU7.svg)](https://asciinema.org/a/Ypd0YlOzB7NUV6RuJqL8IAYU7)
 
+```sh
+$ gendiff --format json before.json after.json
+```
+
+[![asciicast](https://asciinema.org/a/Ez6wPmjUaaWqced7pl4jpVsyM.svg)](https://asciinema.org/a/Ez6wPmjUaaWqced7pl4jpVsyM)
+
 ### YAML
 
 ```sh
@@ -62,6 +68,12 @@ $ gendiff --format plain before.yml after.yml
 
 [![asciicast](https://asciinema.org/a/LkKmw3U6M4zvajqAbgxRoOr35.svg)](https://asciinema.org/a/LkKmw3U6M4zvajqAbgxRoOr35)
 
+```sh
+$ gendiff --format json before.yml after.yml
+```
+
+[![asciicast](https://asciinema.org/a/9SafJWkZorD62jXv5HXTUnhAd.svg)](https://asciinema.org/a/9SafJWkZorD62jXv5HXTUnhAd)
+
 ### INI
 
 ```sh
@@ -81,3 +93,9 @@ $ gendiff --format plain before.ini after.ini
 ```
 
 [![asciicast](https://asciinema.org/a/AWgPl67IhHipRHQsGtv00Qeyn.svg)](https://asciinema.org/a/AWgPl67IhHipRHQsGtv00Qeyn)
+
+```sh
+$ gendiff --format json before.ini after.ini
+```
+
+[![asciicast](https://asciinema.org/a/3rhLM3XA1WMAsQY4PDTo0Mm5M.svg)](https://asciinema.org/a/3rhLM3XA1WMAsQY4PDTo0Mm5M)

@@ -4,9 +4,7 @@ import parse from './src/parsers.js';
 import buildAst from './src/buildAst.js';
 import render from './src/formatters/index.js';
 
-const prepareConfig = (path) => (
-  parse(readFileSync(path, 'utf8'), extname(path))
-);
+const prepareConfig = (path) => parse(readFileSync(path, 'utf8'), extname(path));
 
 export default (firstPath, secondPath, format) => {
   const firstConfig = prepareConfig(firstPath);
