@@ -18,8 +18,8 @@ const valueActions = [
   },
 ];
 
-const fixParser = (data) => Object.entries(data)
-  .reduce((acc, [key, value]) => {
+const fixParser = (data) =>
+  Object.entries(data).reduce((acc, [key, value]) => {
     const { process } = valueActions.find(({ check }) => check(value));
 
     return { ...acc, [key]: process(value, fixParser) };

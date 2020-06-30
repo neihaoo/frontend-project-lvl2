@@ -2,34 +2,34 @@ import _ from 'lodash';
 
 const propertyTypes = [
   {
-    type: 'nested',
-    check: (first, second, key) => (
-      (first[key] instanceof Object && second[key] instanceof Object)
-      && !(Array.isArray(first[key]) && Array.isArray(second[key]))
-    ),
-    process: (first, second, fn) => fn(first, second),
+    check: (first, second, key) => first[key] instanceof Object && second[key] instanceof Object,
+    process: (first, second, key, fn) => ({
+      type: 'nested',
+      name: key,
+      children: fn(first, second),
+    }),
   },
   {
-    type: 'unchanged',
-    check: (first, second, key) => (_.has(first, key) && _.has(second, key))
-      && (first[key] === second[key]),
-    process: _.identity,
+    check: (first, second, key) =>
+      _.has(first, key) && _.has(second, key) && first[key] === second[key],
+    process: (first, second, key) => ({ type: 'unchanged', name: key, value: first }),
   },
   {
-    type: 'changed',
-    check: (first, second, key) => (_.has(first, key) && _.has(second, key))
-      && (first[key] !== second[key]),
-    process: (first, second) => ({ before: first, after: second }),
+    check: (first, second, key) =>
+      _.has(first, key) && _.has(second, key) && first[key] !== second[key],
+    process: (first, second, key) => ({
+      type: 'changed',
+      name: key,
+      value: { before: first, after: second },
+    }),
   },
   {
-    type: 'deleted',
-    check: (first, second, key) => (_.has(first, key) && !_.has(second, key)),
-    process: _.identity,
+    check: (first, second, key) => _.has(first, key) && !_.has(second, key),
+    process: (first, second, key) => ({ type: 'deleted', name: key, value: first }),
   },
   {
-    type: 'added',
-    check: (first, second, key) => (!_.has(first, key) && _.has(second, key)),
-    process: (first, second) => second,
+    check: (first, second, key) => !_.has(first, key) && _.has(second, key),
+    process: (first, second, key) => ({ type: 'added', name: key, value: second }),
   },
 ];
 
@@ -37,11 +37,9 @@ const buildAst = (firstConfig, secondConfig) => {
   const configsKeys = _.union(Object.keys(firstConfig), Object.keys(secondConfig));
 
   return configsKeys.map((key) => {
-    const { type, process } = propertyTypes
-      .find(({ check }) => check(firstConfig, secondConfig, key));
-    const value = process(firstConfig[key], secondConfig[key], buildAst);
+    const { process } = propertyTypes.find(({ check }) => check(firstConfig, secondConfig, key));
 
-    return { type, name: key, value };
+    return process(firstConfig[key], secondConfig[key], key, buildAst);
   });
 };
 

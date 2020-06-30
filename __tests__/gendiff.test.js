@@ -3,13 +3,8 @@ import { join } from 'path';
 import { readFileSync } from 'fs';
 import genDiff from '../index.js';
 
-const getFixturePath = (filename) => (
-  join(process.cwd(), '__fixtures__', filename)
-);
-
-const readFile = (filename) => (
-  readFileSync(getFixturePath(filename), 'utf-8')
-);
+const getFixturePath = (filename) => join(process.cwd(), '__fixtures__', filename);
+const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 
 const table = [
   ['json', 'stylish'],
