@@ -1,43 +1,63 @@
-import _ from 'lodash';
+const has = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
-const propertyTypes = [
+const propertyActions = [
   {
-    check: (first, second, key) => first[key] instanceof Object && second[key] instanceof Object,
-    process: (first, second, key, fn) => ({
+    check: (firstProperty, secondProperty, key) =>
+      firstProperty[key] instanceof Object && secondProperty[key] instanceof Object,
+    process: (firstPropertyValue, secondPropertyValue, key, func) => ({
       type: 'nested',
       name: key,
-      children: fn(first, second),
+      children: func(firstPropertyValue, secondPropertyValue),
     }),
   },
   {
-    check: (first, second, key) =>
-      _.has(first, key) && _.has(second, key) && first[key] === second[key],
-    process: (first, second, key) => ({ type: 'unchanged', name: key, value: first }),
+    check: (firstProperty, secondProperty, key) =>
+      has(firstProperty, key) &&
+      has(secondProperty, key) &&
+      firstProperty[key] === secondProperty[key],
+    process: (firstPropertyValue, secondPropertyValue, key) => ({
+      type: 'unchanged',
+      name: key,
+      value: firstPropertyValue,
+    }),
   },
   {
-    check: (first, second, key) =>
-      _.has(first, key) && _.has(second, key) && first[key] !== second[key],
-    process: (first, second, key) => ({
+    check: (firstProperty, secondProperty, key) =>
+      has(firstProperty, key) &&
+      has(secondProperty, key) &&
+      firstProperty[key] !== secondProperty[key],
+    process: (firstPropertyValue, secondPropertyValue, key) => ({
       type: 'changed',
       name: key,
-      value: { before: first, after: second },
+      valueBefore: firstPropertyValue,
+      valueAfter: secondPropertyValue,
     }),
   },
   {
-    check: (first, second, key) => _.has(first, key) && !_.has(second, key),
-    process: (first, second, key) => ({ type: 'deleted', name: key, value: first }),
+    check: (firstProperty, secondProperty, key) =>
+      has(firstProperty, key) && !has(secondProperty, key),
+    process: (firstPropertyValue, secondPropertyValue, key) => ({
+      type: 'deleted',
+      name: key,
+      value: firstPropertyValue,
+    }),
   },
   {
-    check: (first, second, key) => !_.has(first, key) && _.has(second, key),
-    process: (first, second, key) => ({ type: 'added', name: key, value: second }),
+    check: (firstProperty, secondProperty, key) =>
+      !has(firstProperty, key) && has(secondProperty, key),
+    process: (firstPropertyValue, secondPropertyValue, key) => ({
+      type: 'added',
+      name: key,
+      value: secondPropertyValue,
+    }),
   },
 ];
 
 const buildAst = (firstConfig, secondConfig) => {
-  const configsKeys = _.union(Object.keys(firstConfig), Object.keys(secondConfig));
+  const configsKeys = Object.keys({ ...firstConfig, ...secondConfig });
 
   return configsKeys.map((key) => {
-    const { process } = propertyTypes.find(({ check }) => check(firstConfig, secondConfig, key));
+    const { process } = propertyActions.find(({ check }) => check(firstConfig, secondConfig, key));
 
     return process(firstConfig[key], secondConfig[key], key, buildAst);
   });

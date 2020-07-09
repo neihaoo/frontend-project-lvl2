@@ -1,5 +1,5 @@
-import stylishRender from './stylish.js';
-import plainRender from './plain.js';
+import stylishRender from './stylishRender.js';
+import plainRender from './plainRender.js';
 
 const formatters = {
   stylish: stylishRender,
@@ -7,4 +7,6 @@ const formatters = {
   json: JSON.stringify,
 };
 
-export default (ast, format = 'stylish') => formatters[format](ast);
+const render = (ast, format = 'stylish') => formatters[format](ast);
+
+export default render;

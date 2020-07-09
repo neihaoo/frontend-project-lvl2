@@ -6,7 +6,7 @@ const isNumber = (value) => !Number.isNaN(Number(value));
 const valueActions = [
   {
     check: (value) => value instanceof Object,
-    process: (value, fn) => fn(value),
+    process: (value, func) => func(value),
   },
   {
     check: (value) => typeof value !== 'boolean' && isNumber(value),
@@ -18,17 +18,19 @@ const valueActions = [
   },
 ];
 
-const fixParser = (data) =>
+const fixIniParserOutput = (data) =>
   Object.entries(data).reduce((acc, [key, value]) => {
     const { process } = valueActions.find(({ check }) => check(value));
 
-    return { ...acc, [key]: process(value, fixParser) };
+    return { ...acc, [key]: process(value, fixIniParserOutput) };
   }, {});
 
 const parsers = {
   '.json': JSON.parse,
   '.yml': yaml.safeLoad,
-  '.ini': (path) => fixParser(ini.parse(path)),
+  '.ini': (path) => fixIniParserOutput(ini.parse(path)),
 };
 
-export default (path, ext) => parsers[ext](path);
+const parse = (path, extension) => parsers[extension](path);
+
+export default parse;

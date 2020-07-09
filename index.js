@@ -6,10 +6,12 @@ import render from './src/formatters/index.js';
 
 const prepareConfig = (path) => parse(readFileSync(path, 'utf8'), extname(path));
 
-export default (firstPath, secondPath, format) => {
+const genDiff = (firstPath, secondPath, format = 'stylish') => {
   const firstConfig = prepareConfig(firstPath);
   const secondConfig = prepareConfig(secondPath);
   const ast = buildAst(firstConfig, secondConfig);
 
   return render(ast, format);
 };
+
+export default genDiff;
