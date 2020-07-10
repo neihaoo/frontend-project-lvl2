@@ -1,4 +1,4 @@
-const has = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+const has = Object.prototype.hasOwnProperty;
 
 const propertyActions = [
   {
@@ -12,8 +12,8 @@ const propertyActions = [
   },
   {
     check: (firstProperty, secondProperty, key) =>
-      has(firstProperty, key) &&
-      has(secondProperty, key) &&
+      has.call(firstProperty, key) &&
+      has.call(secondProperty, key) &&
       firstProperty[key] === secondProperty[key],
     process: (firstPropertyValue, secondPropertyValue, key) => ({
       type: 'unchanged',
@@ -23,8 +23,8 @@ const propertyActions = [
   },
   {
     check: (firstProperty, secondProperty, key) =>
-      has(firstProperty, key) &&
-      has(secondProperty, key) &&
+      has.call(firstProperty, key) &&
+      has.call(secondProperty, key) &&
       firstProperty[key] !== secondProperty[key],
     process: (firstPropertyValue, secondPropertyValue, key) => ({
       type: 'changed',
@@ -35,7 +35,7 @@ const propertyActions = [
   },
   {
     check: (firstProperty, secondProperty, key) =>
-      has(firstProperty, key) && !has(secondProperty, key),
+      has.call(firstProperty, key) && !has.call(secondProperty, key),
     process: (firstPropertyValue, secondPropertyValue, key) => ({
       type: 'deleted',
       name: key,
@@ -44,7 +44,7 @@ const propertyActions = [
   },
   {
     check: (firstProperty, secondProperty, key) =>
-      !has(firstProperty, key) && has(secondProperty, key),
+      !has.call(firstProperty, key) && has.call(secondProperty, key),
     process: (firstPropertyValue, secondPropertyValue, key) => ({
       type: 'added',
       name: key,
