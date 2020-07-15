@@ -1,11 +1,14 @@
 const setIndent = (depth = 0) => '  '.repeat(depth);
 
-const formatObject = (obj) => Object.entries(obj).map(([key, value]) => `${key}: ${value}`);
+const stringify = (data, depth = 0) => {
+  if (!(data instanceof Object)) {
+    return data;
+  }
 
-const stringify = (value, depth = 0) =>
-  value instanceof Object
-    ? `{\n${setIndent(depth + 3)}${formatObject(value)}\n${setIndent(depth + 1)}}`
-    : value;
+  const processedData = Object.entries(data).map(([key, value]) => `${key}: ${value}`);
+
+  return `{\n${setIndent(depth + 3)}${processedData}\n${setIndent(depth + 1)}}`;
+};
 
 const formatNode = (key, value, symbol = '', depth = 0) =>
   `${setIndent(depth)}${symbol} ${key}: ${stringify(value, depth)}`;
