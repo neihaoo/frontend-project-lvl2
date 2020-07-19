@@ -4,27 +4,28 @@ const buildAst = (firstConfig, secondConfig) => {
   const configsKeys = _.union(Object.keys(firstConfig), Object.keys(secondConfig));
 
   return configsKeys.map((key) => {
-    const firstConfigValue = firstConfig[key];
-    const secondConfigValue = secondConfig[key];
-
-    if (firstConfigValue instanceof Object && secondConfigValue instanceof Object) {
-      return { type: 'nested', name: key, children: buildAst(firstConfigValue, secondConfigValue) };
+    if (_.has(firstConfig, key) && !_.has(secondConfig, key)) {
+      return { type: 'deleted', name: key, value: firstConfig[key] };
     }
 
-    if (_.has(firstConfig, key) && _.has(secondConfig, key)) {
-      return firstConfigValue === secondConfigValue
-        ? { type: 'unchanged', name: key, value: firstConfigValue }
-        : {
-            type: 'changed',
-            name: key,
-            valueBefore: firstConfigValue,
-            valueAfter: secondConfigValue,
-          };
+    if (!_.has(firstConfig, key) && _.has(secondConfig, key)) {
+      return { type: 'added', name: key, value: secondConfig[key] };
     }
 
-    return _.has(firstConfig, key) && !_.has(secondConfig, key)
-      ? { type: 'deleted', name: key, value: firstConfigValue }
-      : { type: 'added', name: key, value: secondConfigValue };
+    if (firstConfig[key] instanceof Object && secondConfig[key] instanceof Object) {
+      return { type: 'nested', name: key, children: buildAst(firstConfig[key], secondConfig[key]) };
+    }
+
+    if (firstConfig[key] === secondConfig[key]) {
+      return { type: 'unchanged', name: key, value: firstConfig[key] };
+    }
+
+    return {
+      type: 'changed',
+      name: key,
+      valueBefore: firstConfig[key],
+      valueAfter: secondConfig[key],
+    };
   });
 };
 
