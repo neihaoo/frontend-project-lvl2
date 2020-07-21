@@ -4,11 +4,11 @@ const buildAst = (firstConfig, secondConfig) => {
   const configsKeys = _.union(Object.keys(firstConfig), Object.keys(secondConfig));
 
   return configsKeys.map((key) => {
-    if (_.has(firstConfig, key) && !_.has(secondConfig, key)) {
+    if (!_.has(secondConfig, key)) {
       return { type: 'deleted', name: key, value: firstConfig[key] };
     }
 
-    if (!_.has(firstConfig, key) && _.has(secondConfig, key)) {
+    if (!_.has(firstConfig, key)) {
       return { type: 'added', name: key, value: secondConfig[key] };
     }
 
