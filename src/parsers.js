@@ -16,7 +16,7 @@ const fixIniParserOutput = (data) =>
 
 const parsers = {
   json: JSON.parse,
-  yml: yaml.safeLoad,
+  yml: yaml.load,
   ini: (path) => fixIniParserOutput(ini.parse(path)),
 };
 
