@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import yaml from 'js-yaml';
 import ini from 'ini';
 
@@ -5,7 +6,7 @@ const isNumber = (value) => !Number.isNaN(Number(value));
 
 const fixIniParserOutput = (data) =>
   Object.entries(data).reduce((acc, [key, value]) => {
-    if (value instanceof Object) {
+    if (_.isObject(value)) {
       return { ...acc, [key]: fixIniParserOutput(value) };
     }
 
