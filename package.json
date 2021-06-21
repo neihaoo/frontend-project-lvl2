@@ -21,7 +21,7 @@
     "url": "git+https://github.com/neihaoo/frontend-project-lvl2.git"
   },
   "scripts": {
-    "test": "npx -n --experimental-vm-modules jest"
+    "test": "npx jest -b"
   },
   "dependencies": {
     "commander": "^7.2.0",
